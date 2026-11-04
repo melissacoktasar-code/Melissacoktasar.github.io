@@ -1,0 +1,24 @@
+main {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+main section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main section ul {
+    list-style-type: none;
+    font-size: 1em;
+}
+
+main section ol {
+    text-align: left;
+    align-self: flex-start;
+    padding-left: 20px;
+    list-style-type: none;
+}

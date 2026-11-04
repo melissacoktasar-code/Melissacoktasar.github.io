@@ -1,0 +1,69 @@
+/* Partie 4 - Bilan */
+
+:root {
+    /* valeurs de secours si commun.css ne les définit pas */
+    --lightcolorhover: #f3e3e3;
+    --darkcolor: #8b2f2f;
+}
+
+main {
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+main header {
+    text-align: center;
+}
+
+main section {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: normal;
+    text-align: left;
+}
+
+/* tableau d'estimation du coût */
+table {
+    align-self: center;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    max-width: 100%;
+}
+
+th, td {
+    border: 1px solid var(--darkcolor);
+    padding: 8px 14px;
+    text-align: center;
+}
+
+thead th {
+    background-color: var(--darkcolor);
+    color: #fff;
+}
+
+tbody th {
+    background-color: var(--lightcolorhover);
+    text-align: left;
+}
+
+/* requêtes SQL */
+pre {
+    background-color: var(--lightcolorhover);
+    text-align: left;
+    font-size: 0.75rem;
+    padding: 0px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--darkcolor);
+    overflow-x: auto;
+}
+
+/* captures d'écran des résultats */
+img {
+    align-self: center;
+    max-width: 100%;
+    height: auto;
+}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="mission1.css">
+    <title>Mon Mission</title>
+      <nav>
+        <label for="toggle">☰</label>
+        <input type="checkbox" id="toggle">
+    </nav>
+</head>
+<body>
+
+<main class="container">
+
+    <h2>Partie 1 : Présentation de notre étude économique</h2>
+
+    <section class="presentation">
+        <h3>Présentation de notre étude économique durable</h3>
+
+        <p>
+            Dans le cadre de notre projet, nous avons étudié les
+            informations que l'entreprise pourrait collecter afin
+            d'améliorer son fonctionnement et son offre commerciale.
+        </p>
+
+        <p>
+            Notre étude s'est concentrée sur <strong>cinq</strong> catégories
+            principales :
+        </p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Catégorie</th>
+                <th>Informations à collecter</th>
+                <th>Utilité pour l'entreprise</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>1.Informations sur les clients</td>
+                <td>Nom, adresse électronique, téléphone et adresse de livraison.</td>
+                <td>Identifier les clients et gérer les livraisons.</td>
+            </tr>
+
+            <tr>
+                <td>2.Préférences des clients</td>
+                <td>Produits, catégories et marques préférées.</td>
+                <td>Personnaliser les offres et les récompenses de fidélité.</td>
+            </tr>
+
+            <tr>
+                <td>3.Historique des commandes</td>
+                <td>Commandes précédentes, dates et montants.</td>
+                <td>Comprendre les comportements d'achat et anticiper les commandes.</td>
+            </tr>
+
+            <tr>
+                <td>4.Délais de livraison</td>
+                <td>Délais, retards et statuts de livraison.</td>
+                <td>Améliorer les performances de livraison et l'expérience client.</td>
+            </tr>
+
+            <tr>
+                <td>5.Coûts d'emballage</td>
+                <td>Types d'emballages, quantités et coûts.</td>
+                <td>Optimiser les emballages et les coûts de livraison.</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p>
+            Ces informations permettent de mieux comprendre les besoins
+            des clients, de personnaliser les offres, d'améliorer les
+            livraisons et d'optimiser les coûts d'emballage.
+        </p>
+    </section>
+
+
+    <section class="question">
+        <h2>Question 4 : Nombre de produits carnés non commandés actuellement</h2>
+
+        <h3>Objectif de la requête</h3>
+
+        <p>
+            L'objectif est de calculer le nombre de produits carnés
+            qui n'ont jamais été commandés par les clients.
+        </p>
+
+        <h3>Méthode utilisée</h3>
+
+        <p>
+            Nous avons utilisé la fonction COUNT(*) pour compter
+            les produits. La condition CodeCateg = 6 permet de
+            sélectionner uniquement les produits de la catégorie
+            des produits carnés.
+        </p>
+
+        <p>
+            Ensuite, nous avons utilisé une sous-requête avec
+            NOT IN pour exclure les produits déjà présents
+            dans la table DetailCommande.
+        </p>
+
+        <h3>Requête SQL</h3>
+
+        <pre><code class="language-sql">SELECT
+    COUNT(*) AS NombreProduitsNonCommandes
+FROM
+    Produit
+WHERE
+    Produit.CodeCateg = 6
+    AND Produit.RefProd NOT IN (
+        SELECT
+            DetailCommande.[Réf produit]
+        FROM
+            DetailCommande
+    );</code></pre>
+
+        <h3>Résultat obtenu</h3>
+
+        <p>
+            Le résultat de notre requête est de
+            <strong>2 produits carnés non commandés</strong>.
+        </p>
+        <h3>Résultat obtenu</h3>
+
+        <figure class="resultat">
+            <img src="resultat1.png"
+                 alt="Résultat de la requête SQL">
+
+        </figure>
+
+        <h3>Interprétation</h3>
+
+        <p>
+            Cet indicateur permet à l'entreprise d'identifier
+            les produits qui n'ont pas encore été commandés.
+            Elle peut ainsi réfléchir à son offre commerciale
+            et envisager des actions pour améliorer les ventes
+            de ces produits.
+        </p>
+
+    </section>
+
+    <section class="question">
+
+        <h2>Requête personnelle : Quelles sont les catégories de produits les plus et les moins vendues chez KDou ?</h2>
+
+        <h3>Objectif de la requête</h3>
+
+        <p>
+            L'objectif de cette requête est d'identifier les catégories
+            de produits qui enregistrent les quantités de ventes les
+            plus élevées et les plus faibles chez KDou.
+        </p>
+
+        <h3>Intérêt de la requête</h3>
+
+        <p>
+            Cette analyse permet à KDou de mieux comprendre les
+            préférences des clients. Elle aide également l'entreprise
+            à adapter son catalogue, à gérer ses stocks et à prendre
+            de meilleures décisions commerciales.
+        </p>
+
+        <h3>Méthode utilisée</h3>
+
+        <p>
+            Pour réaliser cette requête, j'ai relié trois tables :
+            <em>Categorie, Produit et DetailCommande</em>, grâce aux
+            jointures internes (<strong>INNER JOIN</strong>).
+        </p>
+
+        <p>
+            Ensuite, j'ai utilisé la fonction <strong>SUM()</strong>
+            pour calculer la quantité totale vendue dans chaque catégorie.
+            La clause <strong>GROUP BY</strong> permet de regrouper les
+            résultats par catégorie. Enfin,
+            <strong>ORDER BY ... DESC</strong> permet de classer les
+            catégories de la plus vendue à la moins vendue.
+        </p>
+
+        <h3>Requête SQL</h3>
+
+        <pre><code class="language-sql">SELECT
+    Categorie.NomCateg,
+    SUM(DetailCommande.Quantité) AS TotalVentes
+FROM
+    Categorie
+    INNER JOIN (
+        Produit
+        INNER JOIN DetailCommande
+        ON Produit.RefProd = DetailCommande.[Réf produit]
+    )
+    ON Categorie.CodeCateg = Produit.CodeCateg
+GROUP BY
+    Categorie.NomCateg
+ORDER BY
+    SUM(DetailCommande.Quantité) DESC;</code></pre>
+
+        <h3>Résultats obtenus</h3>
+
+        <p>
+            Les résultats montrent que les <strong>Boissons</strong>
+            sont la catégorie la plus vendue avec
+            <strong>12 606 unités</strong>.
+            À l'inverse, les <strong>Produits secs</strong>
+            représentent la catégorie la moins vendue avec
+            <strong>3 531 unités</strong>.
+        </p>
+
+        <figure class="resultat">
+            <img src="resultat-personnel.png"
+                 alt="Résultats du classement des ventes par catégorie">
+        </figure>
+
+        <h3>Interprétation</h3>
+
+        <p>
+            Cette requête permet à KDou d'identifier les catégories
+            les plus et les moins demandées par ses clients.
+            L'entreprise peut ainsi adapter son offre commerciale
+            et mieux gérer ses stocks en fonction des ventes.
+        </p>
+
+    </section>
+    <div class="navigation-page">
+        <a href="Partie3.html">Partie 3
+            Page suivante →
+        </a>
+    </div>
+</main>
+
+</body>
+</html>
