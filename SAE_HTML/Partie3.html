@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partie 3 - Systeme de fidelité</title>
+    <link rel="stylesheet" href="commun.css">
+    <link rel="stylesheet" href="Partie3.css">
+</head>
+
+<body>
+<header>
+    <nav>
+        <label for="toggle">☰</label>
+        <input type="checkbox" id="toggle">
+        <ul class="menu">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="Partie1.html">Parti 1</a></li>
+            <li><a href="Partie2.html">Parti 2</a></li>
+            <li><a href="Partie3.html">Parti 3</a></li>
+            <li><a href="Partie4.html">Parti 4 </a></li>
+            <li><a href="Conclusion.html">Conclusion</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h1>Partie 3 : Systeme de fidelité</h1>
+
+    <p>Dans cette partie, ce qui m'a été demandé était la mise en place d'un système de fidélité.</p>
+
+    <section class="bilan">
+        <h2>Bilan de l'étude</h2>
+        <p>Durant cette étude, j'ai travaillé sur les fondations du développement d'une application et je m'occupais du côté durable et écologique, mais aussi des coûts logistiques. C'est ainsi qu'est venue l'idée de faire un moyen d'appliquer un système de fidélité avec une méthode de points à gagner au fur et à mesure des achats et de leur coût afin de créer une clientèle fidèle qui durera dans le temps avec des cartes de fidélité écologique et mettre en avant des propositions qui peuvent plaire à notre clientèle, diversifier et gérer nos coûts logistiques en fonction de cette fidélité.</p>
+    </section>
+
+    <section class="requetes">
+        <h2>Requêtes personnalisées</h2>
+        <p>Cette recherche d'idée et la mise en place de système de fidélité m'a fait réfléchir à comment exploiter la base de données Kdou dans cet intérêt.</p>
+
+        <ol>
+            <li>La requête principale :
+                <ul>
+                    <li>Cette requête sert à afficher les commandes d'un client spécifique et celle-ci va servir à effectuer notre système de fidélité qui contient Site à consulter les commandes de notre client afin de lui procurer des points sur notre application et ce même point mène à des réductions ou à des produits gratuits.</li>
+                </ul>
+                <img src="Partie3ima1.png" width="400"
+                     alt="Résultat de la requête : les commandes de Max Deschamps avec le numéro de commande et la date">
+            </li>
+            <li>Requête SQL :
+                <pre><code class="language-sql">SELECT Clientele.Contact, Commande.[N° commande], Commande.DateCde , COUNT(Clientele.Contact)
+FROM Clientele INNER JOIN Commande ON Clientele.CodeCli = Commande.CodeCli
+WHERE Clientele.Contact = "Max Deschamps"
+ORDER BY Commande.DateCde DESC;</code></pre>
+            </li>
+        </ol>
+
+        <ul>
+            <li>Les petits problème :
+                <p>Certes cette requête fonctionne très bien, mais s'il y a une erreur lors de la composition du nom de la personne La requête est erronée. Mais aussi, il aurait été préférable d'afficher tout ceci par moi pour faciliter le comptage des points de fidélité par mois.</p>
+                <img src="Partie3ima2.png" width="400"
+                     alt="Résultat de la requête qui renvoie le nombre de lignes du tableau Perso">
+                <p>Requête SQL :</p>
+                <pre><code class="language-sql">SELECT COUNT(*) AS NombreLignes
+FROM Perso;</code></pre>
+            </li>
+            <li>Cette requête renvoie le nombre de lignes du tableau qu'on lui donne afin de rendre la tâche du comptage commande moins exhaustive pour celui qui utilise la base et bien évidemment il y a toujours le problème où il aurait Était plus facile pour les points que le tableau donné soit celui d'un seul et unique mois.</li>
+        </ul>
+    </section>
+
+    <section class="analyse">
+        <h2>Analyse des données</h2>
+        <p>Suite à ces observations, je me suis un peu plus penché sur les coûts logistiques et je me disais que je pouvais sans doute regarder les coûts annuels et voir si le système de fidélité a fait son effet sur la clientèle Kdou.</p>
+
+        <ol>
+            <li>Analyse des données :
+                <p>Cette requête est là pour faire des comparatifs sur des produits qui ont été en promo ou qui ont été en réduction avec les points de fidélité en fonction des années.</p>
+                <img src="last.png" width="400"
+                     alt="Résultat de la requête : total des ventes des catégories 1 et 3">
+            </li>
+            <li>Requête SQL :
+                <pre><code class="language-sql">SELECT Categorie.NomCateg , SUM(DetailCommande.Quantite) AS TotalVentes
+FROM Categorie
+INNER JOIN ( Produit INNER JOIN DetailCommande ON Produit.RefProd = DetailCommande[Réf produit])
+ON Categorie.CodeCateg = Produit.CodeCateg
+WHERE Categorie.CodeCateg = 1 OR Categorie.CodeCateg = 3
+GROUP BY Categorie.NomCateg;</code></pre>
+            </li>
+        </ol>
+    </section>
+
+    <div id="calltoaction">
+        <p>Allons à la prochaine partie</p>
+        <a href="Partie4.html" class="stylebouton">Partie 4</a>
+    </div>
+</main>
+
+<footer>
+    <p>SAE S1.04 - Kdou Marketing &amp; Sales</p>
+    <p>&copy; Groupe 104 - Aries Mariem, Sara-Imane Maqsood, Melissa Coktasar, The Quach</p>
+</footer>
+</body>
+</html>

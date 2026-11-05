@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Redaction+10:ital,wght@0,400;0,700;1,400&display=swap');
+:root {
+    --lightcolor: #CC7A8F;
+    --lightcolorhover: #993C57;
+    --darkcolor: #8C0F33;
+    --darkcolorhover: #660723;
+}
+
+@media (min-width: 1200px) {
+    /* desktop */
+}
+
+@media (max-width: 1200px) {
+    /* tablette */
+}
+
+@media (max-width: 768px) {
+    /* petite tablette / grand téléphone */
+}
+
+@media (max-width: 480px) {
+    /* téléphone */
+}
+
+body {
+    background-color: #FFEEED;
+    font-size: large;
+}
+
+header {
+    background-color: var(--darkcolor);
+    color: var(--lightcolor);
+    padding: 1rem;
+    text-align: center;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    /* Styles pour le header fixe (pris de mission2.css) */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+header nav ul {
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+header nav ul li a {
+    color: var(--lightcolor);
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 60px;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Style pour le menu dropdown */
+header nav ul li.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+header nav ul li.dropdown .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--darkcolorhover);
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 4px;
+}
+
+label,
+#toggle {
+    display: none;
+}
+.stylebouton {
+    margin: 32px;
+    padding: 5px 80px;
+    cursor: pointer;
+    background-color: var(--lightcolor);
+    color: var(--darkcolor);
+    border: 1px solid var(--darkcolor);
+    border-radius: 30px;
+    box-shadow: -4px 4px var(--darkcolor);
+    font-weight: 700;
+    height: 50px;
+    text-align: center;
+    display: block;
+    width: fit-content;
+}
+
+.stylebouton:hover {
+    margin: 32px;
+    padding: 5px 80px;
+    cursor: pointer;
+    background-color: var(--lightcolorhover);
+    color: var(--darkcolor);
+    border: 1px solid var(--darkcolor);
+    border-radius: 30px;
+    box-shadow: -4px 4px var(--darkcolor);
+}

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partie 4 - Bilan | KDou</title>
+    <link rel="stylesheet" href="commun.css">
+    <link rel="stylesheet" href="Partie4.css">
+</head>
+
+<body>
+<header>
+    <nav>
+        <label for="toggle">☰</label>
+        <input type="checkbox" id="toggle">
+        <ul class="menu">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="Partie1.html">Partie 1</a></li>
+            <li><a href="Partie2.html">Partie 2</a></li>
+            <li><a href="Partie3.html">Partie 3</a></li>
+            <li><a href="Partie3.html">Partie 4</a></li>
+            <li><a href="Conclusion.html">Conclusion</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <h1>Partie 4 : Bilan</h1>
+
+    <article>
+        <h2>Estimation du coût</h2>
+        <section class="interet">
+            <p>
+                Pour ma partie, je devais estimer le coût de notre projet ainsi que
+                le chiffre d'affaires généré par KDOU. J'ai d'abord regardé quelles
+                personnes il faut embaucher et combien il en faut pour mener ce projet
+                à bien. J'ai aussi regardé les coûts de production des idées trouvées
+                par mes camarades, par exemple le coût des cartons éco-responsables ou
+                encore les frais supplémentaires liés à l'ajout de la fonction de
+                fidélité dans le cahier des charges pour les programmeurs et les
+                designers.
+            </p>
+
+            <table>
+                <caption>Estimation du coût du projet</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Types de coûts</th>
+                    <th scope="col">Développeurs</th>
+                    <th scope="col">Designers</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Prix</th>
+                    <td>550 euros</td>
+                    <td>500 euros</td>
+                </tr>
+                <tr>
+                    <th scope="row">Nombre de jours</th>
+                    <td>20 jours</td>
+                    <td>105 jours</td>
+                </tr>
+                <tr>
+                    <th scope="row">Total</th>
+                    <td>10000 euros</td>
+                    <td>57750 euros</td>
+                </tr>
+                <tr>
+                    <th scope="row">Total TTC</th>
+                    <td>12000 euros</td>
+                    <td>69300 euros</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </article>
+
+    <article>
+        <h2>Indicateur personnel</h2>
+        <h3>Énoncé : lister les 5 produits qui se vendent le plus</h3>
+
+        <section class="interet">
+            <h4>Intérêt</h4>
+            <p>
+                Il est important pour l'entreprise KDOU de connaître ses produits
+                phares, afin de prévoir d'éventuelles remises en stock mais aussi
+                d'innover avec des alternatives plus éco-responsables.
+            </p>
+        </section>
+
+        <section class="requete-sql">
+            <h4>Requête SQL</h4>
+            <pre><code class="language-sql">SELECT TOP 5 p.NomProd, SUM(dc.Quantité) AS QuantiteTotaleVendue
+FROM Produit AS p
+INNER JOIN DetailCommande AS dc ON p.RefProd = dc.[Réf produit]
+GROUP BY p.NomProd
+ORDER BY SUM(dc.Quantité) DESC;</code></pre>
+        </section>
+
+        <section class="resultat">
+            <h4>Résultat</h4>
+            <img src="4capture2.png" width="400"
+                 alt="Résultat de la requête : Camembert Pierrot 1993, Raclette Courdavault 1813, Gorgonzola Telino 1698, Guaraná Fantástica 1575, Gnocchi di nonna Alice 1562">
+        </section>
+
+        <section class="explication">
+            <h4>Explication</h4>
+            <p>
+                Cette requête associe la table des produits à celle des commandes pour
+                effectuer la somme des quantités vendues par article. En triant ces
+                sommes par ordre décroissant et en ne conservant que les cinq premiers
+                résultats grâce à la clause « TOP 5 », elle permet d'identifier
+                rapidement les cinq meilleurs produits de KDou.
+            </p>
+        </section>
+    </article>
+
+    <article>
+        <h2>Indicateur collectif</h2>
+        <h3>
+            Énoncé : dans une réflexion en lien avec l'origine de ses produits, on
+            veut comme indicateur le CA total généré à ce jour avec les fournisseurs
+            de l'UE.
+        </h3>
+
+        <section class="interet">
+            <h4>Intérêt</h4>
+            <p>
+                L'objectif de cette requête est de calculer le chiffre d'affaires
+                cumulé avec tous les fournisseurs de l'Union européenne. Cela permet à
+                l'entreprise d'analyser l'impact financier des approvisionnements
+                provenant de l'Union européenne.
+            </p>
+        </section>
+
+        <section class="requete-sql">
+            <h4>Requête SQL</h4>
+            <pre><code class="language-sql">SELECT SUM(dc.Quantité * (p.CoutAchat * cat.CoefMarge) * (1 - Nz(dc.[Remise (%)], 0) / 100)) AS CaTotalUE
+FROM ((((DetailCommande AS dc
+INNER JOIN Produit AS p ON dc.[Réf produit] = p.RefProd)
+INNER JOIN Categorie AS cat ON p.CodeCateg = cat.CodeCateg)
+INNER JOIN Fournisseur AS f ON p.NoFour = f.NoFour)
+INNER JOIN Pays AS pa ON f.NoPays = pa.NoPays)
+WHERE pa.UE = True;</code></pre>
+        </section>
+
+        <section class="resultat">
+            <h4>Résultat</h4>
+            <img src="4capture1.png"
+                 alt="Résultat de la requête : CaTotalUE = 5320680,92">
+        </section>
+
+        <section class="explication">
+            <h4>Explication</h4>
+            <p>
+                Cette requête relie les détails des commandes, les produits, les
+                catégories, les fournisseurs et leurs pays d'origine. Elle calcule le
+                prix de vente unitaire et applique les remises éventuelles tout en
+                gérant les valeurs vides, puis elle multiplie ce prix par la quantité
+                vendue. Le filtre « WHERE pa.UE = True » isole uniquement les
+                fournisseurs européens et la fonction « SUM » additionne les montants
+                pour afficher le chiffre d'affaires total généré avec l'Union
+                européenne.
+            </p>
+        </section>
+    </article>
+
+    <div id="calltoaction">
+        <p>Passons à la conclusion</p>
+        <a href="Conclusion.html" class="stylebouton">Conclusion</a>
+    </div>
+</main>
+
+<footer>
+    <p>SAE S1.04 - KDou Business</p>
+    <p>&copy; Groupe 104 - The Quach, Melissa Coktasar, Sara-Imane Maqsood, Mariem Aries</p>
+</footer>
+</body>
+</html>

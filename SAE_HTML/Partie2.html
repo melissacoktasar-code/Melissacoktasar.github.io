@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partie 2 - KDou</title>
+    <link rel="stylesheet" href="commun.css">
+    <link rel="stylesheet" href="Partie2.css">
+</head>
+
+<body>
+<header>
+    <nav>
+        <label for="toggle">☰</label>
+        <input type="checkbox" id="toggle">
+        <ul class="menu">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="Partie1.html">Partie 1</a></li>
+            <li><a href="Partie2.html">Partie 2</a></li>
+            <li><a href="Partie3.html">Partie 3</a></li>
+            <li><a href="Partie4.html">Partie4</a></li>
+            <li><a href="Conclusion.html">Conclusion</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="introduction">
+        <h1>Partie 2 : Exploitation des données</h1>
+        <p>
+            Ma partie du projet consistait à déterminer quelles informations KDou
+            devrait collecter pour mieux connaître ses clients et améliorer son offre,
+            dans le cadre de l'application que nous développons. Pour cela, je me suis
+            d'abord demandé ce dont l'entreprise a réellement besoin pour livrer ses
+            commandes, personnaliser ses propositions et maîtriser ses coûts, sans
+            collecter plus de données que nécessaire. Cette réflexion s'appuie sur le
+            principe de minimisation des données du RGPD, qui impose de ne recueillir
+            que les informations utiles à un objectif précis.
+        </p>
+        <p>
+            J'ai ainsi retenu cinq catégories : les informations sur les clients, leurs
+            préférences, l'historique des commandes, les délais de livraison et les
+            coûts d'emballage. Les trois premières permettent de connaître la clientèle
+            et de mettre en place un système de fidélité adapté, par exemple avec des
+            offres basées sur les produits préférés de chacun. Les deux dernières
+            concernent la logistique et vont dans le sens de l'image éco-responsable que
+            KDou souhaite renforcer, en réduisant les retards et en optimisant les
+            emballages.
+        </p>
+        <p>
+            Pour vérifier l'utilité de ces données, je les ai ensuite mises en relation
+            avec la base de KDou grâce à deux requêtes SQL, présentées dans la suite de
+            cette partie.
+        </p>
+    </section>
+
+    <section class="bilan">
+
+        <h2>Bilan de l'étude</h2>
+    <p>
+        Pour mon indicateur personnel, j'ai choisi d'analyser les ventes de KDou
+        par catégorie de produits.<strong>L'objectif</strong>  est de savoir quelles catégories se
+        vendent le plus et le moins, afin d'aider l'entreprise à mieux adapter son
+        catalogue, à gérer ses stocks et à prendre de meilleures décisions
+        commerciales. Le résultat montre que les Boissons sont en tête et les
+        Produits secs en dernier. KDou peut donc renforcer le stock des catégories
+        les plus demandées, proposer des promotions ou des points de fidélité sur
+        celles qui se vendent moins, et adapter son offre en conséquence. J'en ai
+        appris qu'une requête bien construite transforme des données brutes en
+        information utile pour décider, même si elle ne mesure que les quantités et
+        non la rentabilité.
+    </p>
+    </section>
+    <section class="presentation">
+        <h2>Les cinq catégories d'informations retenues</h2>
+
+        <p>
+            Dans le cadre du projet, j'ai étudié les informations que l'entreprise
+            pourrait collecter afin d'améliorer son fonctionnement et son offre
+            commerciale. Mon étude s'est concentrée sur
+            <strong>cinq catégories</strong> principales, résumées dans le tableau
+            ci-dessous.
+        </p>
+
+        <table>
+            <caption>Informations à collecter et utilité pour KDou</caption>
+            <thead>
+            <tr>
+                <th scope="col">Catégorie</th>
+                <th scope="col">Informations à collecter</th>
+                <th scope="col">Utilité pour l'entreprise</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">Informations sur les clients</th>
+                <td>Nom, adresse électronique, téléphone et adresse de livraison.</td>
+                <td>Identifier les clients et gérer les livraisons.</td>
+            </tr>
+            <tr>
+                <th scope="row">Préférences des clients</th>
+                <td>Produits, catégories et marques préférés.</td>
+                <td>Personnaliser les offres et les récompenses de fidélité.</td>
+            </tr>
+            <tr>
+                <th scope="row">Historique des commandes</th>
+                <td>Commandes précédentes, dates et montants.</td>
+                <td>Comprendre les comportements d'achat et anticiper les commandes.</td>
+            </tr>
+            <tr>
+                <th scope="row">Délais de livraison</th>
+                <td>Délais, retards et statuts de livraison.</td>
+                <td>Améliorer les performances de livraison et l'expérience client.</td>
+            </tr>
+            <tr>
+                <th scope="row">Coûts d'emballage</th>
+                <td>Types d'emballages, quantités et coûts.</td>
+                <td>Optimiser les emballages et les coûts de livraison.</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p>
+            D'après mon étude, ces informations permettent de mieux comprendre les
+            besoins des clients, de personnaliser les offres, d'améliorer les
+            livraisons et d'optimiser les coûts d'emballage.
+        </p>
+    </section>
+
+    <section class="question">
+        <h2><strong>Mon indicateur personnel: </strong>Les produits carnés jamais commandés</h2>
+
+        <h3>Objectif de mon indicateur</h3>
+        <p>
+            J'ai voulu calculer le nombre de produits carnés qui n'ont jamais été
+            commandés par les clients.
+        </p>
+
+        <h3>Explication</h3>
+        <p>
+            J'ai utilisé la fonction <strong>COUNT(*)</strong> pour compter les
+            produits, et la condition <strong>CodeCateg = 6</strong> pour
+            sélectionner uniquement la catégorie des produits carnés. J'ai ensuite
+            ajouté une sous-requête avec <strong>NOT IN</strong> afin d'exclure
+            tous les produits qui apparaissent dans la table
+            <em>DetailCommande</em>. Il ne reste alors que les produits qui n'ont
+            jamais été commandés.
+        </p>
+
+        <h3>Mon indicateur SQL</h3>
+        <pre><code class="language-sql">SELECT
+    COUNT(*) AS NombreProduitsNonCommandes
+FROM
+    Produit
+WHERE
+    Produit.CodeCateg = 6
+    AND Produit.RefProd NOT IN (
+        SELECT
+            DetailCommande.[Réf produit]
+        FROM
+            DetailCommande
+    );</code></pre>
+
+        <h3>Résultat</h3>
+        <p>
+            Mon indicateur personel renvoie <strong>2 produits carnés</strong> qui n'ont jamais
+            été commandés.
+        </p>
+        <figure class="resultat">
+        <img src="Partie2sql.png"
+             alt="Capture de la requête SQL de la partie 1 dans Access">
+
+    </figure>
+        <figure class="resultat">
+            <img src="Partie2sql2.png"
+                 alt="Capture de la requête SQL de la partie 1 dans Access">
+
+        </figure>
+        <h3>Analyse de ce résultat</h3>
+        <p>
+            Cet indicateur permet à KDou d'identifier les produits carnés que les
+            clients n'ont pas encore achetés. L'entreprise peut ainsi s'interroger
+            sur leur visibilité dans le catalogue, leur prix ou leur intérêt, et
+            envisager des actions pour relancer leurs ventes, comme une promotion.
+        </p>
+        <p>
+            Ma requête indique seulement qu'aucune commande n'est enregistrée dans
+            la base. Elle ne explique pas pourquoi ces produits ne se vendent pas.
+        </p>
+    </section>
+
+    <section class="question">
+        <h2>Requête personnelle 1 : Les catégories les plus et les moins vendues</h2>
+
+        <h3>Objectif de ma requête</h3>
+        <p>
+            J'ai cherché à identifier les catégories de produits qui enregistrent
+            les quantités de ventes les plus élevées et les plus faibles chez KDou.
+        </p>
+
+        <h3>Intérêt pour KDou</h3>
+        <p>
+            Cette analyse aide KDou à mieux comprendre les préférences de ses
+            clients. L'entreprise peut adapter son catalogue, gérer ses stocks et
+            prendre de meilleures décisions commerciales.
+        </p>
+
+        <h3>Explication de ma requête</h3>
+        <p>
+            J'ai relié trois tables, <em>Categorie</em>, <em>Produit</em> et
+            <em>DetailCommande</em>, grâce à des jointures internes
+            (<strong>INNER JOIN</strong>). La fonction <strong>SUM()</strong>
+            calcule la quantité totale vendue dans chaque catégorie, et la clause
+            <strong>GROUP BY</strong> regroupe les résultats par catégorie. Enfin,
+            <strong>ORDER BY ... DESC</strong> classe les catégories de la plus
+            vendue à la moins vendue.
+        </p>
+
+        <h3>Ma requête SQL</h3>
+        <pre><code class="language-sql">SELECT
+    Categorie.NomCateg,
+    SUM(DetailCommande.Quantité) AS TotalVentes
+FROM
+    Categorie
+    INNER JOIN (
+        Produit
+        INNER JOIN DetailCommande
+        ON Produit.RefProd = DetailCommande.[Réf produit]
+    )
+    ON Categorie.CodeCateg = Produit.CodeCateg
+GROUP BY
+    Categorie.NomCateg
+ORDER BY
+    SUM(DetailCommande.Quantité) DESC;</code></pre>
+
+        <h3>Résultat de ma requête</h3>
+        <p>
+            Les <strong>Boissons</strong> sont la catégorie la plus vendue, avec
+            <strong>12 606 unités</strong>. Les <strong>Produits secs</strong> sont
+            la catégorie la moins vendue, avec <strong>3 531 unités</strong>.
+        </p>
+        <figure class="resultat">
+            <img src="requete1.png"
+                 alt="Classement des catégories par quantités vendues : Boissons en tête avec 12 606 unités, Produits secs en dernier avec 3 531 unités">
+            <figcaption>Classement des catégories par quantités vendues</figcaption>
+        </figure>
+        <figure class="resultat">
+            <img src="requete1.1.png"
+                 alt="Classement des catégories par quantités vendues : Boissons en tête avec 12 606 unités, Produits secs en dernier avec 3 531 unités">
+            <figcaption>Classement des catégories par quantités vendues</figcaption>
+        </figure>
+        <h3>Analyse de ce résultat</h3>
+        <p>
+            Les Boissons se vendent environ 3,6 fois plus que les Produits secs.
+            KDou peut donc s'appuyer sur cet écart pour adapter son offre,
+            renforcer le stock des catégories les plus demandées et réfléchir à des
+            offres promotionnelles ou à des points de fidélité sur celles qui se
+            vendent moins.
+        </p>
+        <p>
+            Ma requête compare les quantités vendues, pas le chiffre d'affaires.
+            Une catégorie moins vendue peut quand même être très rentable, car ses
+            produits peuvent coûter plus cher.
+        </p>
+    </section>
+
+    <div id="calltoaction">
+        <p>Allons à la prochaine partie</p>
+        <a href="Partie3.html" class="stylebouton">Partie 3</a>
+    </div>
+</main>
+
+<footer>
+    <p>SAE S1.04 - KDou Marketing &amp; Sales</p>
+    <p>&copy; Groupe 104 - Aries Mariem, Sara-Imane Maqsood, Melissa Coktasar, The Quach</p>
+</footer>
+</body>
+</html>

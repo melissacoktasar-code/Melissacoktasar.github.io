@@ -1,0 +1,37 @@
+
+
+main {
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+main header {
+    text-align: center;
+}
+
+main section {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: normal;
+    text-align: left;
+}
+
+pre {
+    background-color: #f3e3e3;
+    text-align: left;
+    font-size: 0.75rem;
+    padding: 0px 20px;
+    border-radius: 10px;
+    border: 1px solid #7b2037;
+    overflow-x: auto;
+}
+
+img {
+    align-self: center;
+    max-width: 100%;
+    height: auto;
+}

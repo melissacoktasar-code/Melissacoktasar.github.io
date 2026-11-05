@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partie 1 : Sources d'idées</title>
+    <link rel="stylesheet" href="commun.css">
+    <link rel="stylesheet" href="Partie1.css">
+</head>
+
+<body>
+<header>
+    <nav>
+        <label for="toggle">☰</label>
+        <input type="checkbox" id="toggle">
+        <ul class="menu">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="Partie1.html">Partie 1</a></li>
+            <li><a href="Partie2.html">Partie 2</a></li>
+            <li><a href="Partie3.html">Partie 3</a></li>
+            <li><a href="Partie4.html">Partie 4</a></li>
+            <li><a href="Conclusion.html">Conclusion</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="container">
+    <h1>Partie 1 : Sources d'idées</h1>
+
+    <section class="introduction">
+        <h2>Mes sources d'inspiration</h2>
+        <p>
+            Ma partie du projet reposait sur le fait de trouver des idées pour
+            développer notre application, dont le but est de faciliter l'achat de
+            produits pour les clients, tout en créant un système de fidélité qui
+            attire les clients avec des offres promotionnelles, par exemple des
+            petits prix sur des produits dont la date de péremption est proche.
+        </p>
+        <p>
+            Je me suis inspirée de l'entreprise TooGoodToGo, qui lutte contre le
+            gaspillage alimentaire en proposant des paniers surprise contenant des
+            aliments dont la date de péremption est proche, ou des invendus, pour
+            le tiers du prix initial. Cette idée, combinée à un programme de
+            fidélité qui permet de gagner des points à chaque achat et de profiter
+            d'offres promotionnelles, voire de produits gratuits au bout d'un
+            certain seuil de points, m'a semblé pertinente pour attirer davantage
+            de clients et faire perdurer leur envie de consommer les produits de
+            KDou.
+        </p>
+        <p>
+            J'ai donc choisi de combiner le concept de TooGoodToGo avec celui du
+            programme de fidélité Lidl Plus, qui permet aux clients abonnés de
+            profiter d'offres en achetant fréquemment. De plus, Carrefour est en
+            partenariat avec TooGoodToGo depuis 2019, ce qui m'a encouragée à
+            rassembler ces trois composants et à créer des fonctionnalités
+            pertinentes pour cette application mobile.
+        </p>
+    </section>
+
+    <section class="question">
+        <h2>Requête personnelle : les produits en surplus de stock</h2>
+
+        <h3>Objectif de ma requête</h3>
+        <p>
+            J'ai voulu savoir quels sont les produits dont le stock est important
+            par rapport aux quantités commandées par les clients. L'objectif est de
+            repérer les produits en surplus afin d'aider KDou à mieux gérer ses
+            approvisionnements et à envisager des offres promotionnelles sur ces
+            produits.
+        </p>
+        <p>
+            KDou pourrait alors les proposer à prix réduit ou les intégrer aux
+            paniers surprise prévus dans notre application, afin de favoriser leur
+            vente et de limiter le gaspillage alimentaire.
+        </p>
+
+        <h3>Explication de ma requête</h3>
+        <p>
+            J'ai relié les tables <em>Produit</em> et <em>DetailCommande</em> grâce
+            aux champs RefProd et Réf produit. J'ai utilisé un
+            <strong>LEFT JOIN</strong> pour inclure aussi les produits jamais
+            commandés. En effet, il est intéressant de voir ce que les clients
+            achètent le plus, mais observer les invendus permet de créer des
+            paniers surprise ciblant certains produits et de susciter l'intérêt de
+            nouveaux consommateurs.
+        </p>
+        <p>
+            J'ai aussi utilisé <strong>SUM</strong> pour calculer les quantités
+            commandées et <strong>GROUP BY</strong> pour les regrouper par produit.
+            Enfin, <strong>HAVING</strong> permet de garder les produits dont le
+            stock est supérieur aux quantités commandées, ainsi que ceux qui n'ont
+            jamais été commandés.
+        </p>
+
+        <h3>Ma requête SQL</h3>
+        <pre><code class="language-sql">SELECT P.NomProd, P.UnitStock, SUM(DC.Quantité) AS QteCommandee
+FROM Produit AS P
+LEFT JOIN DetailCommande AS DC ON P.RefProd = DC.[Réf produit]
+WHERE P.UnitStock &gt; 0
+GROUP BY P.RefProd, P.NomProd, P.UnitStock
+HAVING P.UnitStock &gt; SUM(DC.Quantité)
+OR SUM(DC.Quantité) IS NULL
+ORDER BY P.UnitStock DESC;</code></pre>
+
+        <h3>Résultat de ma requête</h3>
+        <figure class="resultat">
+            <img src="indic1.png"
+                 alt="Résultat de la requête : 10 produits qui possèdent encore du stock mais pour lesquels aucune commande n'a été enregistrée" width="400">
+            <figcaption>Produits dont le stock dépasse les quantités commandées</figcaption>
+        </figure>
+        <p>
+            La requête fait apparaître 10 produits qui possèdent encore du stock,
+            mais pour lesquels aucune commande n'a été enregistrée. Par exemple, le
+            knäckebrod Kala compte 61 unités en stock.
+        </p>
+
+        <h3>Analyse de ce résultat</h3>
+        <p>
+            Ces produits pourraient être intéressants à étudier pour les promotions
+            ou les paniers surprise de KDou. Cependant, cela ne signifie pas
+            forcément qu'ils se vendent mal : les quantités commandées
+            correspondent aux commandes enregistrées dans la base, et non
+            nécessairement aux ventes récentes. Il faudrait aussi prendre en compte
+            les dates des commandes et la durée de conservation des produits avant
+            d'envisager des promotions.
+        </p>
+    </section>
+
+    <section class="question">
+        <h2>Requête de groupe : les clients pilotes et leurs partenaires</h2>
+
+        <h3>Objectif de la requête</h3>
+        <p>
+            Dans une réflexion sur le partenariat client, la question était de
+            savoir si des clients pilotes d'un réseau partenaire ont autant de
+            commandes que les clients partenaires.
+        </p>
+
+        <h3>Explication de la requête</h3>
+        <p>
+            Pour répondre, j'ai d'abord relié les tables <em>Clientele</em> et
+            <em>Commande</em> avec une jointure interne (<strong>INNER JOIN</strong>).
+            J'ai ensuite utilisé la fonction <strong>COUNT()</strong> pour calculer
+            le nombre de commandes de chaque client et <strong>GROUP BY</strong>
+            pour regrouper les résultats. J'ai enregistré cette première requête
+            sous le nom <em>Requête1</em>.
+        </p>
+        <figure class="resultat">
+            <img src="resultatsql0.png"
+                 alt="Première partie de la requête 5 : calcul du nombre de commandes de chaque client avec COUNT et GROUP BY" width="400">
+            <figcaption>Première partie : nombre de commandes par client</figcaption>
+        </figure>
+
+        <p>
+            J'ai ensuite créé une deuxième requête en reliant Requête1 à elle-même
+            pour comparer le nombre de commandes des clients pilotes avec celui de
+            leurs partenaires. Grâce à la condition <strong>WHERE</strong>, j'ai pu
+            identifier les clients ayant effectué le même nombre de commandes.
+        </p>
+        <figure class="resultat">
+            <img src="relierdeuxtables.png"
+                 alt="Seconde partie de la requête 5 : Requête1 reliée à elle-même pour comparer le nombre de commandes des clients pilotes et de leurs partenaires" width=""330">
+            <figcaption>Deuxième partie : comparaison entre clients pilotes et partenaires</figcaption>
+        </figure>
+    </section>
+
+    <div id="calltoaction">
+        <p>Allons à la prochaine partie</p>
+        <a href="Partie2.html" class="stylebouton">Partie 2</a>
+    </div>
+</main>
+
+<footer>
+    <p>SAE S1.04 - KDou Marketing &amp; Sales</p>
+    <p>&copy; Groupe 104 - Aries Mariem, Sara-Imane Maqsood, Melissa Coktasar, The Quach</p>
+</footer>
+</body>
+</html>
